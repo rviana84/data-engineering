@@ -36,3 +36,27 @@ TwitterAgent.channels.MemChannel.transactionCapacity = 100
 # Ligando Source e Sink ao Channel
 TwitterAgent.sources.Twitter.channels = MemChannel
 TwitterAgent.sinks.HDFS.channel = MemChannel
+
+
+
+2 - Ciar o Diretorio para Armazenamento no hdfs
+
+hdfs dfs -mkdir /user/hadoop/twitter_data
+
+hdfs dfs -ls /user/hadoop
+
+
+3 - Iniciar Agent para Coleta de Dados
+
+bin/flume-ng agent --conf ./conf/ -f conf/twitter.conf -Dflume.root.logger=DEBUG,console -n TwitterAgent
+
+ OBS: verficar coleta em: ec2-18-218-11-243.us-east-2.compute.amazonaws.com:9870
+
+ OBS: Criar sh para o agent
+
+  vi agent.sh
+    bin/flume-ng agent --conf ./conf/ -f conf/twitter.conf -Dflume.root.logger=DEBUG,console -n TwitterAgent
+
+  chmod 750 agent.sh
+
+  nohup ./agent.sh &  
