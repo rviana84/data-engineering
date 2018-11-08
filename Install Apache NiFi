@@ -1,0 +1,55 @@
+ ### Install Apache NiFi ###
+
+
+ cd Downloads
+
+ wget http://ftp.unicamp.br/pub/apache/nifi/1.7.1/nifi-1.7.1-bin.zip
+
+ unzip nifi-1.7.1-bin.zip
+
+ rm -rf nifi-1.7.1-bin.zip
+
+ sudo mv nifi-1.7.1/ /opt/nifi
+
+ cd /opt/
+ cd nifi/bin/
+
+ ## Config Java Home ##
+
+  vi nifi-env.sh
+
+    export JAVA_HOME=opt/jdk/
+
+
+ # Init NiFI #
+
+ ./nifi.sh run
+
+Executar em Segundo Plano
+
+ nohup ./nifi.sh run &
+
+
+ # Open Nifi with Browser #
+
+ ec2-13-58-223-83.us-east-2.compute.amazonaws.com:8080/nifi
+
+
+ ### Teste NiFi ###
+
+cd /home/hadoop/
+mkdir source
+mkdir target
+
+
+1 - Ciar o Diretorio para Armazenamento no hdfs
+
+hdfs dfs -mkdir /user/hadoop/twitter_data_081118
+
+hdfs dfs -ls /user/hadoop
+
+2 - Baixando os Arquivos de Coleta
+
+hadoop fs -get /user/hadoop/twitter_data_081118/21019628230234.json /home/hadoop/
+
+scp -i data-lake-key.pem -r  hadoop@ec2-18-218-11-243.us-east-2.compute.amazonaws.com:/home/hadoop/twitterdata/twitter_data_081118 /Users/rodrigoviana/Documents/
