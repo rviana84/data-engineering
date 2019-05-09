@@ -1,9 +1,9 @@
 # Configuração Data Lake com Multi-Cluster Hadoop na AWS
 
 # Nome DNS dos servidores
-Namenode - ec2-34-232-63-146.compute-1.amazonaws.com
-Datanode1 - ec2-34-204-168-76.compute-1.amazonaws.com
-Datanode2 - ec2-34-239-180-170.compute-1.amazonaws.com
+Namenode - XXXXXXXX.compute-1.amazonaws.com
+Datanode1 - XXXXXXX.compute-1.amazonaws.com
+Datanode2 - XXXXXXX.compute-1.amazonaws.com
 
 
 # Atualiza o SO em todos os servidores
@@ -49,7 +49,7 @@ nano /home/ubuntu/server/hadoop-2.8.3/etc/hadoop/core-site.xml
 <configuration>
     <property>
         <name>fs.default.name</name>
-        <value>hdfs://ec2-34-232-63-146.compute-1.amazonaws.com:9000</value>
+        <value>hdfs://XXXXXXXX.compute-1.amazonaws.com:9000</value>
     </property>
     <property>
       <name>hadoop.tmp.dir</name>
@@ -108,7 +108,7 @@ nano /home/ubuntu/server/hadoop-2.8.3/etc/hadoop/yarn-site.xml
   </property>
   <property>
       <name>yarn.resourcemanager.hostname</name>
-      <value>ec2-34-232-63-146.compute-1.amazonaws.com</value>
+      <value>XXXXXXXX.compute-1.amazonaws.com</value>
       <description>Hostname do Namenode.</description>
   </property>
 </configuration>
