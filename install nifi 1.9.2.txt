@@ -1,0 +1,74 @@
+#####Configurar máquina Nifi (Ubuntu 18.04 LTS)
+#####OBS: Disco local = 30GB  | Disco Extra = 300GB
+
+##Instalar Java
+
+sudo apt-get update
+sudo add-apt-repository ppa:openjdk-r/ppa -y
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk openjdk-8-jre -y
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+
+
+##Configurar storage
+
+#https://cloud.google.com/compute/docs/disks/add-persistent-disk?hl=pt-br
+sudo lsblk
+sudo mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/sdb
+sudo mkdir -p /mnt/storage
+sudo mount -o discard,defaults /dev/sdb /mnt/storage
+sudo chmod a+w /mnt/storage
+echo UUID=`sudo blkid -s UUID -o value /dev/sdb` /mnt/storage ext4 discard,defaults,nofail 0 2 | sudo tee -a /etc/fstab
+
+##Montar storage e criar diretórios para o nifi
+sudo mkdir /mnt/storage/database_repository
+sudo mkdir /mnt/storage/flowfile_repository
+sudo mkdir /mnt/storage/content_repository
+sudo mkdir /mnt/storage/provenance_repository
+
+
+##Instalar Nifi
+
+sudo wget http://ftp.unicamp.br/pub/apache/nifi/1.9.1/nifi-1.9.1-bin.tar.gz
+sudo mv nifi-1.9.2-bin.tar.gz /opt
+cd /opt
+sudo tar xvzf nifi-1.9.2-bin.tar.gz
+sudo mv nifi-1.9.2 /opt/nifi;
+
+##Arquivo nifi.properties (alterar o valor dos seguintes registros)
+sudo vi /opt/nifi/conf/nifi.properties
+	{
+		# H2 Settings
+		nifi.database.directory=/mnt/storage/database_repository
+
+		# FlowFile Repository
+		nifi.flowfile.repository.directory=/mnt/storage/flowfile_repository
+
+		# Content Repository
+		nifi.content.repository.directory.default=/mnt/storage/content_repository
+
+		# Persistent Provenance Repository Properties
+		nifi.provenance.repository.directory.default=/mnt/storage/provenance_repository
+		nifi.provenance.repository.max.storage.time=2 hours
+	}
+
+
+#Arquivo bootstrap.conf (alterar o valor dos seguintes registros)
+sudo vi /opt/nifi/conf/bootstrap.conf
+	{
+		# JVM memory settings
+		java.arg.2=-Xms4g
+		java.arg.3=-Xmx7g
+
+	}
+
+
+# Adicionar Nifi ao StartUp do Ubuntu
+
+cd /opt/nifi/bin/
+sudo ./nifi.sh install
+export NIFI_HOME="/opt/nifi"
+
+##Iniciar Nifi
+
+sudo service nifi start
