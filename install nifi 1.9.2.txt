@@ -29,7 +29,7 @@ sudo mkdir /mnt/storage/provenance_repository
 
 ##Instalar Nifi
 
-sudo wget http://ftp.unicamp.br/pub/apache/nifi/1.9.1/nifi-1.9.1-bin.tar.gz
+sudo wget http://www.apache.org/dist/nifi/1.9.2/nifi-1.9.2-bin.tar.gz
 sudo mv nifi-1.9.2-bin.tar.gz /opt
 cd /opt
 sudo tar xvzf nifi-1.9.2-bin.tar.gz
