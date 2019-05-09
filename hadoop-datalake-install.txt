@@ -178,5 +178,5 @@ hdfs dfs -copyToLocal /user/ubuntu/texto.txt /tmp/
 
 # Acesso via browser:
 
-ec2-13-58-21-129.us-east-2.compute.amazonaws.com:50070
+XXXXXXX.us-east-2.compute.amazonaws.com:50070
 
