@@ -1,0 +1,48 @@
+1 - Create Project
+
+gcloud projects create tvg-gdata-xxxx --organization=307305912835
+
+
+2 - Creating Firewall Rule
+
+gcloud compute firewall-rules create default-allow-http-8080 \
+  --allow tcp:8080 \
+  --source-ranges 0.0.0.0/0 \
+  --target-tags gdata-nifi
+
+3 - Create VM Instance
+
+gcloud compute instances create {INSTANCE_NAME} \
+    --project tvg-gdata-xxxx \
+    --image-family ubuntu-1804-lts \
+    --image-project ubuntu-os-cloud \
+    --machine-type n1-standard-4 \
+    --zone us-central1-c \
+    --subnet default \
+    --tags gdata-nifi \
+    --network-tier STANDARD \
+    --boot-disk-size=30GB \
+    --boot-disk-type=pd-standard \
+    --boot-disk-device-name {INSTANCE_NAME} \
+    --create-disk size=300GB,type=pd-standard \
+    --deletion-protection
+
+
+4 - Connecting to VM Instance
+
+gcloud compute ssh {INSTANCE_NAME}
+
+
+5 - Tunneling VM Instance on Nifi Port
+
+gcloud compute ssh gov-transp-prd-01 -- -L 8080:localhost:8080
+
+
+6 - Stoping VM Instance
+
+gcloud compute instances stop {INSTANCE_NAME}
+
+
+7 - Scheduler Start/Stop VM Instance Start/Stop
+
+https://cloud.google.com/scheduler/docs/start-and-stop-compute-engine-instances-on-a-schedule?hl=pt-br
